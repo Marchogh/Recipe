@@ -1,81 +1,65 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>|
-      <router-link to="/recipe">Recipe</router-link>
+      <router-link to="/">
+        <img class="logo" src="@/assets/logo.svg" alt /> Recipes
+      </router-link>
+      <router-link to="/add-recipe">
+        <p>Add recipe</p>
+      </router-link>
     </div>
     <router-view />
-    <form>
-      <label for="title">Title:</label>
-      <input type="text" v-model="recipeTitle" />
-      <label for="title">Image url:</label>
-      <input type="text" v-model="recipeImage" />
-      <label for="description">Description:</label>
-      <textarea v-model="recipeDescription"></textarea>
-      <label for="ingredients">Ingredients:</label>
-      <textarea v-model="recipeIngredients"></textarea>
-      <button type="submit" @click.prevent="addRecipe()">ADD</button>
-    </form>
-    <ul v-for="recipe in recipes" :key="recipe.id">
-      <li>{{ recipe.title }}</li>
-      <li>{{ recipe.description }}</li>
-      <li>{{ recipe.ingredients }}</li>
-      <li>
-        <img :src="`${recipe.image}`" width="200" />
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
-import { recipesCollection } from "./firebase";
-
 export default {
-  name: "app",
-  data() {
-    return {
-      recipeTitle: "",
-      recipeDescription: "",
-      recipeIngredients: "",
-      recipeImage: "",
-      recipes: []
-    };
-  },
-  firestore() {
-    return {
-      recipes: recipesCollection.orderBy("createdAt", "desc")
-    };
-  },
-  methods: {
-    addRecipe() {
-      recipesCollection
-        .add({
-          title: this.recipeTitle,
-          image: this.recipeImage,
-          description: this.recipeDescription,
-          ingredients: this.recipeIngredients,
-          createdAt: new Date()
-        })
-        .then(function(docRef) {
-          console.log("document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-          console.log("Error adding document:", error);
-        });
-    }
-  }
+  name: "app"
 };
 </script>
 
 <style lang="scss">
-:root {
-  $font-size: 26px;
+html {
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
-body {
-  font-size: $font-size;
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+  padding: 2rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.logo {
+  max-width: 100px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -85,6 +69,8 @@ body {
 }
 
 #nav {
+  display: flex;
+  justify-content: center;
   padding: 30px;
 
   a {

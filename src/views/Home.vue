@@ -1,14 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <ul v-for="recipe in recipes" :key="recipe.id">
+      <router-link :to="{ name: 'Recipe', params: { id: recipe.id } }">
+        <li>{{ recipe.title }}</li>
+      </router-link>
+      <li>
+        <router-link :to="{ name: 'Recipe', params: { id: recipe.id } }">
+          <img :src="`${recipe.image}`" width="200" />
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import { recipesCollection } from "../firebase";
 
 export default {
   name: "Home",
-  components: {}
+  components: {},
+  data() {
+    return {
+      recipeTitle: "",
+      recipeDescription: "",
+      recipeIngredients: "",
+      recipeImage: "",
+      recipes: {}
+    };
+  },
+  firestore() {
+    return {
+      recipes: recipesCollection.orderBy("createdAt", "desc")
+    };
+  }
 };
 </script>
